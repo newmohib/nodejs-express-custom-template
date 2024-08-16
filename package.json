@@ -1,0 +1,28 @@
+{
+  "name": "custom-nodejs-express-template",
+  "version": "1.0.0",
+  "description": "custom nodejs expressjs template with error handaling",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/newmohib/test.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "ExpressJS",
+    "MongoDB",
+    "Template"
+  ],
+  "author": "MIT",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/newmohib/test/issues"
+  },
+  "homepage": "https://github.com/newmohib/test#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
