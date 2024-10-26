@@ -1,20 +1,17 @@
-const express = require('express');
-const cors  = require('cors');
-const { customer } = require('./api');
-const HandleErrors = require('./utils/error-handler')
-
+const express = require("express");
+const cors = require("cors");
+const customer = require("./api/customer");
+const HandleErrors = require("./utils/error-handler");
 
 module.exports = async (app) => {
+  app.use(express.json({ limit: "1mb" }));
+  app.use(express.urlencoded({ extended: true, limit: "1mb" }));
+  app.use(cors());
+  app.use(express.static(__dirname + "/public"));
 
-    app.use(express.json({ limit: '1mb'}));
-    app.use(express.urlencoded({ extended: true, limit: '1mb'}));
-    app.use(cors());
-    app.use(express.static(__dirname + '/public'))
+  //api
+  customer(app);
 
-    //api
-    customer(app);
-
-    // error handling
-    app.use(HandleErrors);
-    
-}
+  // error handling
+  app.use(HandleErrors);
+};
