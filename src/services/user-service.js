@@ -21,10 +21,12 @@ class CustomerService {
             if(existingCustomer){
             
                 const validPassword = await ValidatePassword(password, existingCustomer.password, existingCustomer.salt);
+                console.log({existingCustomer});
+                
                 
                 if(validPassword){
-                    const token = await GenerateSignature({ email: existingCustomer.email, _id: existingCustomer._id});
-                    return FormateData({id: existingCustomer._id, token });
+                    const token = await GenerateSignature({ email: existingCustomer.email, id: existingCustomer.id, role: existingCustomer.role});
+                    return FormateData({id: existingCustomer.id, token });
                 } 
             }
     
@@ -39,7 +41,9 @@ class CustomerService {
 
     async SignUp(userInputs){
         
-        const { email, password, phone } = userInputs;
+        const { email, password, phone, name, role } = userInputs;
+
+        if (!role) role = 0
         
         try{
             // create salt
@@ -47,7 +51,7 @@ class CustomerService {
             
             let userPassword = await GeneratePassword(password, salt);
             
-            const existingCustomer = await this.repository.CreateCustomer({ email, password: userPassword, phone, salt});
+            const existingCustomer = await this.repository.CreateCustomer({ email, password: userPassword, phone, name, role, salt});
             
             const token = await GenerateSignature({ email: email, _id: existingCustomer._id});
 
@@ -59,10 +63,11 @@ class CustomerService {
 
     }
 
-    async GetProfile(id){
+    async GetProfile(userInof){
+        const { id } = userInof;
 
         try {
-            const existingCustomer = await this.repository.FindCustomerById({id});
+            const existingCustomer = await this.repository.FindCustomerById(id);
             return FormateData(existingCustomer);
             
         } catch (err) {

@@ -1,4 +1,4 @@
-const { createCustomer, findCustomerByEmail } = require('../models/userModel'); // Import the function
+const { createCustomer, findCustomerByEmail,findCustomerById } = require('../models/userModel'); // Import the function
 
 const {
   APIError,
@@ -8,10 +8,10 @@ const {
 
 //Dealing with data base operations
 class CustomerRepository {
-  async CreateCustomer({ email, password, phone, salt }) {
+  async CreateCustomer(userInfo) {
     try {
       // Call the createCustomer function from the model
-      const customer = await createCustomer({ email, password, phone, salt });
+      const customer = await createCustomer(userInfo);
       // You can add additional logic, like sending a confirmation email, etc.
       return customer;
     } catch (err) {
@@ -21,10 +21,10 @@ class CustomerRepository {
   }
 
 
-  async FindCustomer({ email }) {
+  async FindCustomer(filterData) {
     try {
       // Call the findCustomerByEmail function from the model
-      const customer = await findCustomerByEmail({ email });
+      const customer = await findCustomerByEmail(filterData);
       
       if (!customer) {
         throw new Error("Customer not found");
@@ -37,10 +37,10 @@ class CustomerRepository {
     }
   }
 
-  async FindCustomerById({ id }) {
+  async FindCustomerById(id) {
     try {
       // Call the findCustomerById function from the model
-      const customer = await findCustomerById({ id });
+      const customer = await findCustomerById(id);
       
       if (!customer) {
         throw new Error("Customer not found");
