@@ -7,7 +7,7 @@ const StartServer = async() => {
 
     const app = express();
     
-    await databaseConnection();
+    await databaseConnection.init();
     
     await expressApp(app);
 

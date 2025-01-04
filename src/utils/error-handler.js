@@ -1,9 +1,9 @@
 const { createLogger, transports } = require("winston");
 const { AppError } = require("./app-errors");
-const { DB_ERROR_URL, DB_BASE_URL } = require("../config");
+// const { DB_ERROR_URL } = require("../config");
 
 // want to store logs in a MongoDB database
-require("winston-mongodb");
+// require("winston-mongodb");
 
 //want to send logs to a remote server via HTTP or HTTPS
 //npm install winston-transport-http
@@ -38,15 +38,15 @@ const LogErrors = createLogger({
       filename: "app_error.log",
       level: "error", // Store only error level logs in the file
     }),
-    new transports.MongoDB({
-      db: DB_ERROR_URL,
-      collection: "logs",
-      level: "error", // Store only error level logs in MongoDB
-      options: {
-        useNewUrlParser: true, // Optional: Set it if you encounter issues with the connection
-        useUnifiedTopology: true, // Set to use the new topology engine
-      },
-    }),
+    // new transports.MongoDB({
+    //   db: DB_ERROR_URL,
+    //   collection: "logs",
+    //   level: "error", // Store only error level logs in MongoDB
+    //   options: {
+    //     useNewUrlParser: true, // Optional: Set it if you encounter issues with the connection
+    //     useUnifiedTopology: true, // Set to use the new topology engine
+    //   },
+    // }),
   ],
 });
 
