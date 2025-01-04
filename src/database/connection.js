@@ -64,14 +64,12 @@ class DBConnection {
   }
 
   // Get the connection instance
-  getConnection() {
-    return mysql.createPool(DB_URL)
-    
-    // if (!this.connection) {
-    //   throw new Error('Database connection not initialized. Call init() first.');
-    // }
-    // return this.connection;
-  }
+  // getConnection() {
+  //   if (!this.connection) {
+  //     throw new Error('Database connection not initialized. Call init() first.');
+  //   }
+  //   return this.connection;
+  // }
 }
 
 module.exports = new DBConnection();

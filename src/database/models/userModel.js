@@ -3,20 +3,17 @@ const { DB_URL } = require('../../config');
 
 // Set up the MySQL connection
 const connection = mysql.createPool(DB_URL);
-// const connection = require('../connection');
 
-// const { databaseConnection } = require('../../database');
-// const connection = databaseConnection.getConnection();
+async function createCustomer({ email, password, phone, salt, name, role }) {
 
-async function createCustomer({ email, password, phone, salt }) {
   try {
     const query = `
-      INSERT INTO users (email, password, salt, phone)
-      VALUES (?, ?, ?, ?)
+      INSERT INTO users (email, password, salt, phone, name, role)
+      VALUES (?, ?, ?, ?, ?, ?)
     `;
 
     // Use query params to prevent SQL injection
-    const [rows, fields] = await connection.promise().query(query, [email, password, salt, phone]);
+    const [rows, fields] = await connection.promise().query(query, [email, password, salt, phone, name, role]);
 
     // Return the inserted customer details, including the customer ID
     return {
@@ -52,7 +49,7 @@ async function findCustomerByEmail({ email }) {
   }
 }
 
-async function findCustomerById({ id }) {
+async function findCustomerById( id ) {
   try {
     const query = `
       SELECT * FROM users WHERE id = ?
