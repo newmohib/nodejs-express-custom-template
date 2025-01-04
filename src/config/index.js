@@ -1,15 +1,29 @@
 const dotEnv = require("dotenv");
 const { log } = require("winston");
+const path = require("path");
 
 if (process.env.NODE_ENV !== "prod") {
-  const configFile = `./.env.${process.env.NODE_ENV}`;
+  // const configFile = `./.env.${process.env.NODE_ENV}`;
+  const configFile = path.join(process.cwd(), `.env.${process.env.NODE_ENV}`);
+  console.log({ configFile });
   dotEnv.config({ path: configFile });
-//   console.log(configFile)
-  log(configFile)
+  //   console.log(configFile)
+  log({
+    level: "info",
+    message: `Loaded environment from: ${configFile}`,
+  });
+
+  // log(configFile)
 } else {
-  dotEnv.config();
-//   console.log(dotEnv.config())
-  log(dotEnv.config())
+  dotEnv.config({ path: path.join(process.cwd(), ".env") });
+
+  // dotEnv.config();
+  //   console.log(dotEnv.config())
+  log({
+    level: "info",
+    message: `Loaded environment from: ${dotEnv.config()}`,
+  });
+  // log(dotEnv.config())
 }
 
 module.exports = {
