@@ -13,7 +13,7 @@ async function createCustomer({ email, password, phone, salt, name, role }) {
     `;
 
     // Use query params to prevent SQL injection
-    const [rows, fields] = await connection.promise().query(query, [email, password, salt, phone, name, role]);
+    const [rows] = await connection.promise().query(query, [email, password, salt, phone, name, role]);
     console.log({rows});
     
 
@@ -35,7 +35,7 @@ async function findCustomerByEmail({ email }) {
     `;
 
     // Use query params to prevent SQL injection
-    const [rows, fields] = await connection.promise().query(query, [email]);
+    const [rows] = await connection.promise().query(query, [email]);
     console.log({rows});
     
 
@@ -59,7 +59,8 @@ async function findCustomerById( id ) {
     `;
 
     // Use query params to prevent SQL injection
-    const [rows, fields] = await connection.promise().query(query, [id]);
+    const [rows] = await connection.promise().query(query, [id]);
+    console.log({rows});
 
     // If no customer is found, return null
     if (rows.length === 0) {

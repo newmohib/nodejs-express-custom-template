@@ -2,7 +2,6 @@ const { createCustomer, findCustomerByEmail,findCustomerById } = require('../mod
 
 const {
   APIError,
-  BadRequestError,
   STATUS_CODES,
 } = require("../../utils/app-errors");
 
@@ -29,6 +28,7 @@ class CustomerRepository {
       }
       return existingCustomer;
     } catch (err) {
+      console.error("Error finding customer:", err);
       throw new APIError(
         "API Error",
         STATUS_CODES.NOT_FOUND,

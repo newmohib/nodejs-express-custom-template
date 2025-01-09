@@ -1,6 +1,6 @@
 const { TicketRepository } = require("../database");
-const { FormateData, GeneratePassword, GenerateSalt, GenerateSignature, ValidatePassword } = require('../utils');
-const { APIError, BadRequestError } = require('../utils/app-errors')
+const { APIError, STATUS_CODES } = require('../utils/app-errors')
+
 
 
 // All Business logic will be here
@@ -20,7 +20,7 @@ class CustomerService {
     
         try {
           // Call the createTicket function from the model
-          const ticketInfo = await createTicket({ subject, description, customerId, executiveId });
+          const ticketInfo = await this.repository.createTicket({ subject, description, customerId, executiveId });
     
           // Add additional logic here, such as sending notifications or logging
           // Example: Send an email notification to the admin or executive
@@ -37,7 +37,7 @@ class CustomerService {
   async getAllTickets() {
     try {
       // Call the getAllTickets function from the model
-      const ticketList = await getAllTickets();
+      const ticketList = await this.repository.getAllTickets();
 
       // Add additional logic here, such as filtering, formatting, or enriching the data
       // Example: You could sort or group tickets by status
@@ -57,7 +57,7 @@ class CustomerService {
       }
 
       // Call the getTicketById function from the model
-      const ticketInfo = await getTicketById(ticketId);
+      const ticketInfo = await this.repository.getTicketById(ticketId);
 
       if (!ticketInfo) {
         throw new APIError("Ticket not found", STATUS_CODES.NOT_FOUND, null);
@@ -83,7 +83,7 @@ class CustomerService {
       }
 
       // Call the model function to update the ticket
-      const updatedTicket = await updateTicket(ticketId, updateFields);
+      const updatedTicket = await this.repository.updateTicket(ticketId, updateFields);
 
       if (!updatedTicket) {
         throw new APIError('Unable to update ticket. Ticket not found.', STATUS_CODES.NOT_FOUND, null);
@@ -104,7 +104,7 @@ class CustomerService {
       }
 
       // Call the model function to delete the ticket
-      const result = await deleteTicket(ticketId);
+      const result = await this.repository.deleteTicket(ticketId);
 
       if (!result) {
         throw new APIError('Unable to delete ticket. Ticket not found.', STATUS_CODES.NOT_FOUND, null);

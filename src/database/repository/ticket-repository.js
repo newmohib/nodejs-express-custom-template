@@ -1,11 +1,11 @@
 
 const {createTicket, getAllTickets, getTicketById, updateTicket, deleteTicket } = require('../models/ticketModel'); // Import the function
 
-const {
-  APIError,
-  BadRequestError,
-  STATUS_CODES,
-} = require("../../utils/app-errors");
+// const {
+//   APIError,
+//   BadRequestError,
+//   STATUS_CODES,
+// } = require("../../utils/app-errors");
 
 //Dealing with data base operations
 class CustomerRepository {

@@ -1,5 +1,5 @@
 const TicketService = require("../services/ticket-service");
-const UserAuth = require("./middlewares/auth");
+// const UserAuth = require("./middlewares/auth");
 
 module.exports = (app) => {
   const service = new TicketService();

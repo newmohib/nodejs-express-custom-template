@@ -1,6 +1,6 @@
 const { CustomerRepository } = require("../database");
 const { FormateData, GeneratePassword, GenerateSalt, GenerateSignature, ValidatePassword } = require('../utils');
-const { APIError, BadRequestError, STATUS_CODES } = require('../utils/app-errors')
+const { APIError, STATUS_CODES } = require('../utils/app-errors')
 
 
 // All Business logic will be here

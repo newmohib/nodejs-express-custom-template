@@ -11,8 +11,8 @@ module.exports = (app) => {
       return res.json(data);
     } catch (err) {
       console.log("signup Error",{ err });
-      return res.json({ message: err.err || "Something went wrong" });
-      // next(err);
+      // return res.json({ message: err.err || "Something went wrong" });
+      next(err);
     }
   });
 
