@@ -1,6 +1,6 @@
 const { CustomerRepository } = require("../database");
 const { FormateData, GeneratePassword, GenerateSalt, GenerateSignature, ValidatePassword } = require('../utils');
-const { APIError, BadRequestError } = require('../utils/app-errors')
+const { APIError, BadRequestError, STATUS_CODES } = require('../utils/app-errors')
 
 
 // All Business logic will be here
@@ -21,19 +21,17 @@ class CustomerService {
             if(existingCustomer){
             
                 const validPassword = await ValidatePassword(password, existingCustomer.password, existingCustomer.salt);
-                console.log({existingCustomer});
-                
                 
                 if(validPassword){
-                    const token = await GenerateSignature({ email: existingCustomer.email, id: existingCustomer.id, role: existingCustomer.role});
-                    return FormateData({id: existingCustomer.id, token });
+                    const token = await GenerateSignature({ email: existingCustomer.email, _id: existingCustomer._id});
+                    return FormateData({id: existingCustomer._id, token });
                 } 
             }
     
             return FormateData(null);
 
         } catch (err) {
-            throw new APIError('Data Not found', err)
+            throw new APIError('Data Not found',STATUS_CODES.NOT_FOUND, err)
         }
 
        
@@ -41,7 +39,7 @@ class CustomerService {
 
     async SignUp(userInputs){
         
-        const { email, password, phone, name, role } = userInputs;
+        let { email, password, phone, name, role } = userInputs;
 
         if (!role) role = 0
         
@@ -53,12 +51,12 @@ class CustomerService {
             
             const existingCustomer = await this.repository.CreateCustomer({ email, password: userPassword, phone, name, role, salt});
             
-            const token = await GenerateSignature({ email: email, _id: existingCustomer._id});
+            const token = await GenerateSignature({ email: email, id: existingCustomer.id});
 
-            return FormateData({id: existingCustomer._id, token });
+            return FormateData({id: existingCustomer.id, token });
 
         }catch(err){
-            throw new APIError('Data Not found', err)
+            throw new APIError('Data Not found',STATUS_CODES.NOT_FOUND, err)
         }
 
     }
@@ -71,7 +69,7 @@ class CustomerService {
             return FormateData(existingCustomer);
             
         } catch (err) {
-            throw new APIError('Data Not found', err)
+            throw new APIError('Data Not found',STATUS_CODES.NOT_FOUND, err)
         }
     }
 

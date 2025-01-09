@@ -19,21 +19,21 @@ class CustomerRepository {
       throw new Error("Unable to Register Customer");
     }
   }
-
-
+  
   async FindCustomer(filterData) {
     try {
-      // Call the findCustomerByEmail function from the model
-      const customer = await findCustomerByEmail(filterData);
-      
-      if (!customer) {
-        throw new Error("Customer not found");
+      const existingCustomer = await findCustomerByEmail(filterData);
+      if (!existingCustomer) {
+        return null
+        
       }
-      
-      return customer;
+      return existingCustomer;
     } catch (err) {
-      console.error("Error getting customer:", err);
-      throw new Error("Unable to Retrieve Customer");
+      throw new APIError(
+        "API Error",
+        STATUS_CODES.NOT_FOUND,
+        "Unable to Find Customer"
+      );
     }
   }
 

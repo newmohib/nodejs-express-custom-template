@@ -14,12 +14,13 @@ async function createCustomer({ email, password, phone, salt, name, role }) {
 
     // Use query params to prevent SQL injection
     const [rows, fields] = await connection.promise().query(query, [email, password, salt, phone, name, role]);
+    console.log({rows});
+    
 
     // Return the inserted customer details, including the customer ID
     return {
-      customerId: rows.insertId,
-      email,
-      phone,
+      id: rows.insertId,
+      email, password, phone, salt, name, role
     };
   } catch (err) {
     console.error("Error creating customer:", err);
@@ -35,17 +36,19 @@ async function findCustomerByEmail({ email }) {
 
     // Use query params to prevent SQL injection
     const [rows, fields] = await connection.promise().query(query, [email]);
+    console.log({rows});
+    
 
-    // If no customer is found, return null
+    // If no user is found, return null
     if (rows.length === 0) {
       return null;
     }
 
-    // Returning the first customer (assuming rows is an array of results)
+    // Returning the first user (assuming rows is an array of results)
     return rows[0];
   } catch (err) {
-    console.error("Error finding customer:", err);
-    throw new Error("Unable to Find Customer");
+    console.error("Error finding user:", err);
+    throw new Error("Unable to Find user");
   }
 }
 

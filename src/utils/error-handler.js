@@ -1,6 +1,6 @@
 const { createLogger, transports } = require("winston");
 const { AppError } = require("./app-errors");
-// const { DB_ERROR_URL } = require("../config");
+// const { DB_ERROR_URL, DB_BASE_URL } = require("../config");
 
 // want to store logs in a MongoDB database
 // require("winston-mongodb");
@@ -77,17 +77,18 @@ class ErrorLogger {
 const ErrorHandler = async (err, req, res, next) => {
   const errorLogger = new ErrorLogger();
 
-  process.on("uncaughtException", (reason, promise) => {
-    console.log(reason, "UNHANDLED");
-    throw reason; // need to take care
-  });
+  // process.on("uncaughtException", (reason, promise) => {
+  //   console.log(reason, "UNHANDLED");
+  //   throw reason; // need to take care
+  // });
 
-  process.on("uncaughtException", (error) => {
-    errorLogger.logError(error);
-    if (errorLogger.isTrustError(err)) {
-      //process exist // need restart
-    }
-  });
+  // process.on("uncaughtException", (error) => {
+  //   errorLogger.logError(error);
+  //   if (errorLogger.isTrustError(err)) {
+  //     //process exist // need restart
+  //   }
+  // });
+
 
   // console.log(err.description, '-------> DESCRIPTION')
   // console.log(err.message, '-------> MESSAGE')
@@ -97,13 +98,13 @@ const ErrorHandler = async (err, req, res, next) => {
     if (errorLogger.isTrustError(err)) {
       if (err.errorStack) {
         const errorDescription = err.errorStack;
-        return res.status(err.statusCode).json({ message: errorDescription });
+        return res.status(err.statusCode || 500).json({ message: errorDescription });
       }
-      return res.status(err.statusCode).json({ message: err.message });
+      return res.status(err.statusCode || 500).json({ message: err.message });
     } else {
       //process exit // terriablly wrong with flow need restart
     }
-    return res.status(err.statusCode).json({ message: err.message });
+    return res.status(err.statusCode || 404).json({ message: err.message });
   }
   next();
 };
